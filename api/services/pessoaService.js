@@ -13,24 +13,16 @@ async function criarPessoa({ nome, email, telefone }) {
   return result.rows[0];
 }
 
-module.exports = {
-  listarPessoas,
-  criarPessoa,
-};
-
 async function buscarPessoaPorId(id) {
-  const result = await pool.query("SELECT * FROM pessoa WHERE id = $1", [id]);
+  const result = await pool.query("SELECT * FROM pessoa WHERE id=$1", [id]);
   return result.rows[0];
 }
 
-async function atualizarPessoa(id, dados) {
-  const { nome, email, telefone } = dados;
-
+async function atualizarPessoa(id, { nome, email, telefone }) {
   const result = await pool.query(
     "UPDATE pessoa SET nome=$1, email=$2, telefone=$3 WHERE id=$4 RETURNING *",
     [nome, email, telefone, id]
   );
-
   return result.rows[0];
 }
 

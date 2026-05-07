@@ -1,18 +1,23 @@
-require("dotenv").config();
 const express = require("express");
+const cors = require("cors");
 
 const pessoaRoutes = require("./api/routes/pessoa");
 const experienciaRoutes = require("./api/routes/experiencia");
 
 const app = express();
+
+app.use(cors());
+
 app.use(express.json());
 
-app.use(experienciaRoutes);
-app.use("/pessoas", pessoaRoutes);
-app.use("/pessoas", experienciaRoutes);
-
 app.get("/", (req, res) => {
-  res.send("API funcionando 🚀");
+  res.send("API Currículo funcionando 🚀");
 });
 
-module.exports = app;
+app.use("/pessoas", pessoaRoutes);
+
+app.use("/experiencias", experienciaRoutes);
+
+app.listen(3000, "0.0.0.0", () => {
+  console.log("Servidor rodando na porta 3000");
+});

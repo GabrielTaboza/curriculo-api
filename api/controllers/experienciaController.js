@@ -1,48 +1,87 @@
 const service = require("../services/experienciaService");
 
-async function postExperiencia(req, res) {
-  try {
-    const { id } = req.params;
-    const experiencia = await service.criarExperiencia(id, req.body);
-    res.status(201).json(experiencia);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-}
 
 async function getExperiencias(req, res) {
   try {
-    const { id } = req.params;
-    const lista = await service.listarExperiencias(id);
-    res.json(lista);
+    const experiencias =
+      await service.listarExperiencias();
+
+    res.json(experiencias);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({
+      error: error.message,
+    });
   }
 }
+
+
+async function getExperiencia(req, res) {
+  try {
+    const experiencia =
+      await service.buscarExperiencia(req.params.id);
+
+    res.json(experiencia);
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+}
+
+
+async function postExperiencia(req, res) {
+  try {
+
+    const experiencia =
+      await service.criarExperiencia(req.body);
+
+    res.status(201).json(experiencia);
+
+  } catch (error) {
+
+    res.status(500).json({
+      error: error.message,
+    });
+
+  }
+}
+
 
 async function putExperiencia(req, res) {
   try {
-    const { id } = req.params;
-    const experiencia = await service.atualizarExperiencia(id, req.body);
+    const experiencia =
+      await service.atualizarExperiencia(
+        req.params.id,
+        req.body
+      );
+
     res.json(experiencia);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({
+      error: error.message,
+    });
   }
 }
 
+
 async function deleteExperiencia(req, res) {
   try {
-    const { id } = req.params;
-    await service.deletarExperiencia(id);
-    res.json({ message: "Experiência deletada" });
+    await service.deletarExperiencia(req.params.id);
+
+    res.json({
+      message: "Experiência deletada",
+    });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({
+      error: error.message,
+    });
   }
 }
 
 module.exports = {
-  postExperiencia,
   getExperiencias,
+  getExperiencia,
+  postExperiencia,
   putExperiencia,
   deleteExperiencia,
 };
